@@ -1187,10 +1187,16 @@ In this scenario, use your best judgment to generate the schema. You need to exa
                 base_url=llm_config.base_url,
                 extra_args=kwargs
             )
-            
+            import lopt
             # Extract and return schema
-            return json.loads(response.choices[0].message.content)
-            
+            try:
+                result = lopt.parse_object(
+                    response.choices[0].message.content, lang="json"
+                )
+                return result
+            except Exception as e:
+                print(f"Error parsing schema: {e}")
+                return json.loads(response.choices[0].message.content)
         except Exception as e:
             raise Exception(f"Failed to generate schema: {str(e)}")
 
