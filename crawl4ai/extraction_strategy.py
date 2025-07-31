@@ -1088,6 +1088,7 @@ class JsonElementExtractionStrategy(ExtractionStrategy):
     @staticmethod
     def generate_schema(
         html: str,
+        url: str,
         schema_type: str = "CSS", # or XPATH
         query: str = None,
         target_json_example: str = None,
@@ -1101,6 +1102,7 @@ class JsonElementExtractionStrategy(ExtractionStrategy):
         
         Args:
             html (str): The HTML content to analyze
+            url (str): The URL of the webpage being analyzed
             query (str, optional): Natural language description of what data to extract
             provider (str): Legacy Parameter. LLM provider to use 
             api_token (str): Legacy Parameter. API token for LLM provider
@@ -1132,6 +1134,7 @@ Generating this HTML manually is not feasible, so you need to generate the JSON 
 - baseSelector: This is the CSS or XPATH selector that identifies the base element that contains all the repetitive patterns.
 - baseFields: This is a list of fields that you extract from the base element itself.
 - fields: This is a list of fields that you extract from the children of the base element. {{name, selector, type}} based on the type, you may have extra keys such as "attribute" when the type is "attribute".
+- pattern_url: This is a regular expression pattern that matches URLs where this schema can be applied. If you're unsure what URLs this schema can match, use an exact match pattern for the current URL.
 
 # Extra Context:
 In this context, the following items may or may not be present:
@@ -1150,6 +1153,8 @@ In this scenario, use your best judgment to generate the schema. You need to exa
         user_message = {
             "role": "user",
             "content": f"""
+                URL: {url}
+                
                 HTML to analyze:
                 ```html
                 {html}
