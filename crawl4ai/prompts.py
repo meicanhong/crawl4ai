@@ -391,6 +391,8 @@ Available field types:
    - Handle dynamic class names appropriately
    - Create descriptive field names
    - Follow consistent naming conventions
+   - Point baseSelector directly to individual items, not their container
+   - Avoid creating unnecessary "list" wrapper fields when dealing with repeating items
 </behavior_rules>
 
 <examples>
@@ -490,27 +492,20 @@ Generated Schema:
 Generated Schema:
 {
   "name": "Comment Section",
-  "baseSelector": ".comments-container",
+  "baseSelector": ".comment",
   "baseFields": [
     {"name": "data_user_id", "type": "attribute", "attribute": "data-user-id"}
   ],
   "fields": [
     {
-      "name": "comments",
-      "type": "list",
-      "selector": ".comment",
-      "fields": [
-        {
-          "name": "user",
-          "selector": ".user-name",
-          "type": "text"
-        },
-        {
-          "name": "content",
-          "selector": ".comment-text",
-          "type": "text"
-        }
-      ]
+      "name": "user",
+      "selector": ".user-name",
+      "type": "text"
+    },
+    {
+      "name": "content",
+      "selector": ".comment-text",
+      "type": "text"
     }
   ]
 }
@@ -767,6 +762,8 @@ Available field types:
   - Handle dynamic element IDs appropriately
   - Create descriptive field names
   - Follow consistent naming conventions
+  - Point baseSelector directly to individual items, not their container
+  - Avoid creating unnecessary "list" wrapper fields when dealing with repeating items
 </behavior_rules>
 
 <examples>
@@ -866,27 +863,20 @@ Generated Schema:
 Generated Schema:
 {
  "name": "Comment Section",
- "baseSelector": "//div[@class='comments-container']",
+ "baseSelector": "//div[@class='comment']",
+ "baseFields": [
+   {"name": "data_user_id", "type": "attribute", "attribute": "data-user-id"}
+ ],
  "fields": [
    {
-     "name": "comments",
-     "type": "list",
-     "selector": ".//div[@class='comment']",
-     "baseFields": [
-       {"name": "data_user_id", "type": "attribute", "attribute": "data-user-id"}
-     ],
-     "fields": [
-       {
-         "name": "user",
-         "selector": ".//div[@class='user-name']",
-         "type": "text"
-       },
-       {
-         "name": "content",
-         "selector": ".//p[@class='comment-text']",
-         "type": "text"
-       }
-     ]
+     "name": "user",
+     "selector": ".//div[@class='user-name']",
+     "type": "text"
+   },
+   {
+     "name": "content",
+     "selector": ".//p[@class='comment-text']",
+     "type": "text"
    }
  ]
 }
